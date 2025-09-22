@@ -1,0 +1,192 @@
+<!--
+SevaSetu Frontend SPA
+Files included below in this single document:
+1) index.html
+2) styles.css
+3) app.js
+
+Drop these files into your frontend/ folder and serve as static files (Netlify, local dev).
+The frontend expects the backend API at: http://localhost:5000/api  (edit API_BASE in app.js)
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SevaSetu — Uniting Hands, Uplifting Lives</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="#/"> <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7-8-3.134-8-7z" fill="white" opacity="0.08"/></svg></div>
+        <div>
+          <div>SevaSetu</div>
+          <div class="small muted">Uniting Hands, Uplifting Lives</div>
+        </div>
+      </a>
+
+      <nav class="spacer" id="main-nav">
+        <a data-route="#/" class="nav-link">Home</a>
+        <a data-route="#/about" class="nav-link">About</a>
+        <a data-route="#/awareness" class="nav-link">Awareness</a>
+        <a data-route="#/leaderboard" class="nav-link">Leaderboard</a>
+        <a data-route="#/contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="row">
+        <button id="btn-register" class="btn ghost">Register</button>
+        <button id="btn-login" class="btn">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="active">
+      <div class="hero">
+        <div>
+          <div class="hero-card">
+            <h1 class="title">Uniting Hands, <span style="color:var(--brand)">Uplifting Lives</span></h1>
+            <p class="subtitle">A lightweight platform connecting volunteers with NGOs for fast, local impact.</p>
+
+            <div class="cta top-gap">
+              <button class="btn" id="cta-vol">Join as Volunteer</button>
+              <button class="btn ghost" id="cta-ngo">Register NGO</button>
+            </div>
+
+            <div class="stats top-gap">
+              <div class="stat">
+                <h3 id="stat-tasks">0</h3>
+                <div class="muted small">Tasks Completed</div>
+              </div>
+              <div class="stat">
+                <h3 id="stat-vols">0</h3>
+                <div class="muted small">Volunteers</div>
+              </div>
+              <div class="stat">
+                <h3 id="stat-ngos">0</h3>
+                <div class="muted small">NGOs Connected</div>
+              </div>
+            </div>
+
+            <div class="steps top-gap">
+              <div class="step">
+                <div class="icon">1</div>
+                <div><strong>Register</strong><div class="muted small">Sign up as Volunteer or NGO</div></div>
+              </div>
+              <div class="step">
+                <div class="icon">2</div>
+                <div><strong>Complete Task</strong><div class="muted small">Upload proof and help</div></div>
+              </div>
+              <div class="step">
+                <div class="icon">3</div>
+                <div><strong>Earn Rewards</strong><div class="muted small">Points, badges and certificates</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card video">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Awareness video" allowfullscreen></iframe>
+          </div>
+
+          <div class="card top-gap">
+            <h3 class="small muted">Latest Tasks</h3>
+            <div id="home-tasks" class="grid top-gap-small"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="card">
+        <h2 class="title">About SevaSetu</h2>
+        <p class="muted">SevaSetu connects volunteers with grassroots NGOs. Our mission is to make volunteering local, measurable and rewarding.</p>
+      </div>
+    </section>
+
+    <!-- AWARENESS -->
+    <section id="awareness">
+      <div class="card">
+        <h2>Awareness Hub</h2>
+        <p class="muted">Curated videos and tutorials for volunteers.</p>
+        <div class="grid top-gap" id="awareness-list"></div>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="leaderboard">
+      <div class="card">
+        <h2>Leaderboard</h2>
+        <p class="muted">Top volunteers by city</p>
+        <div id="leaderboard-list" class="top-gap grid"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="card">
+        <h2>Contact</h2>
+        <form id="contact-form">
+          <div class="row-wrap top-gap">
+            <div class="field"><label>Name</label><input name="name" required /></div>
+            <div class="field"><label>Email</label><input type="email" name="email" required /></div>
+          </div>
+          <div class="top-gap"><label>Message</label><textarea name="message" required></textarea></div>
+          <div class="top-gap"><button class="btn">Send</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- REGISTER / LOGIN MODAL (reused) -->
+    <div id="auth-modal" class="modal hide">
+      <div class="modal-card card">
+        <div class="row-wrap top-gap"><h3 id="auth-title">Register</h3><div class="right"><button id="close-auth" class="btn ghost">Close</button></div></div>
+
+        <div id="auth-forms">
+          <!-- Register forms inserted by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD (single container; content swapped based on role) -->
+    <section id="dashboard">
+      <div class="card">
+        <div class="row-wrap"><h2 id="dash-title">Dashboard</h2><div class="right"><button id="logout" class="btn ghost">Logout</button></div></div>
+        <div id="dash-content" class="top-gap"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN PANEL modal for simplicity -->
+    <section id="admin" class="hide">
+      <div class="card">
+        <h2>Admin Panel</h2>
+        <div id="admin-metrics" class="top-gap row-wrap"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="small muted">© SevaSetu — Built with ❤️</div>
+  </footer>
+
+  <div id="toast" aria-live="polite" class="hide"></div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
+
+
+
+
+
